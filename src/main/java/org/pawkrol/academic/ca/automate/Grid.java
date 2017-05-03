@@ -3,10 +3,8 @@ package org.pawkrol.academic.ca.automate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.function.Consumer;
 
-/**
- * Created by pawkrol on 4/28/17.
- */
 public class Grid {
 
     private List<Cell> grid;
@@ -37,10 +35,8 @@ public class Grid {
         }
     }
 
-    public void forEach(GridForEach f){
-        for (Cell c: grid){
-            f.forEach(c);
-        }
+    public void forEach(Consumer<Cell> f){
+        grid.forEach(f);
     }
 
     public int getWidth() {
