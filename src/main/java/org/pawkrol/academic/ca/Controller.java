@@ -5,10 +5,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.ComboBox;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
 import org.pawkrol.academic.ca.automate.AutomataResolver;
@@ -25,9 +22,6 @@ import org.pawkrol.academic.ca.utils.ColorHelper;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-/**
- * Created by pawkrol on 4/28/17.
- */
 public class Controller implements Initializable{
 
     @FXML private Canvas canvas;
@@ -39,6 +33,8 @@ public class Controller implements Initializable{
     @FXML private TextField rowsText;
     @FXML private TextField stepsText;
     @FXML private TextField seedText;
+
+    @FXML private Label iterationText;
 
     @FXML private CheckBox cyclicCheck;
     @FXML private CheckBox seedCheck;
@@ -77,6 +73,8 @@ public class Controller implements Initializable{
     public void onInit() throws Exception {
         initResolver();
         startBtn.setDisable(false);
+
+        iterationText.setText("0");
     }
 
     @FXML
@@ -121,6 +119,8 @@ public class Controller implements Initializable{
                         draw((Grid) event.getSource().getValue());
                         automataResolver.reset();
                         startBtn.setDisable(false);
+                        iterationText.setText(""
+                                + automataResolver.getIteration());
                     }
                 )
         );
@@ -131,7 +131,6 @@ public class Controller implements Initializable{
         }
 
         initGrid(automataResolver.getGrid());
-
         draw(automataResolver.getGrid());
     }
 
@@ -218,7 +217,7 @@ public class Controller implements Initializable{
         double cx = xOffset + c.getX() * cellSize;
         double cy = yOffset + c.getY() * cellSize;
 
-        return mx <= cx + cellSize && my <= cy + cellSize
-                && mx >= cx && my >= cy;
+        return mx < cx + cellSize && my < cy + cellSize
+                && mx > cx && my > cy;
     }
 }

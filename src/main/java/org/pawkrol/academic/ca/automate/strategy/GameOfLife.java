@@ -9,9 +9,6 @@ import org.pawkrol.academic.ca.utils.ColorHelper;
 import java.util.List;
 import java.util.Random;
 
-/**
- * Created by pawkrol on 4/30/17.
- */
 public class GameOfLife implements Strategy {
 
     private final int DEAD = 0;
@@ -31,7 +28,7 @@ public class GameOfLife implements Strategy {
 
         grid.forEach( c -> {
             List<Cell> neighbours = neighbourhood.neighbours(prevGrid, c);
-            int alive = countState(neighbours, ALIVE);
+            long alive = countState(neighbours, ALIVE);
             int state = c.getState();
 
             if (state == DEAD) {
@@ -64,12 +61,10 @@ public class GameOfLife implements Strategy {
             cell.setState(ALIVE);
     }
 
-    private int countState(List<Cell> cells, int state){
-        int counter = 0;
-        for(Cell c: cells){
-            if (c.getState() == state) counter++;
-        }
-        return counter;
+    private long countState(List<Cell> cells, int state){
+        return cells.stream()
+                .filter(c -> c.getState() == state)
+                .count();
     }
 
     private void initCell(Cell c){

@@ -5,20 +5,20 @@ import javafx.concurrent.Task;
 import org.pawkrol.academic.ca.automate.neighbourhood.Neighbourhood;
 import org.pawkrol.academic.ca.automate.strategy.Strategy;
 
-/**
- * Created by pawkrol on 4/29/17.
- */
 public class AutomataResolver extends Service<Grid>{
 
     private Strategy strategy;
     private Neighbourhood neighbourhood;
     private Grid grid;
     private int steps;
+    private int iteration;
 
     public void init() throws Exception{
         if (grid == null) throw new Exception("Grid not set");
         if (strategy == null) throw new Exception("Strategy not set");
         if (neighbourhood == null) throw new Exception("Neighbourhood not set");
+
+        iteration = 0;
 
         strategy.init(grid);
     }
@@ -54,6 +54,10 @@ public class AutomataResolver extends Service<Grid>{
         this.steps = steps;
     }
 
+    public int getIteration() {
+        return iteration;
+    }
+
     @Override
     protected Task<Grid> createTask() {
         return new Task<Grid>() {
@@ -61,6 +65,7 @@ public class AutomataResolver extends Service<Grid>{
             protected Grid call() throws Exception {
                 for (int s = 0; s < steps; s++) {
                     strategy.evaluate(grid, neighbourhood);
+                    iteration++;
                 }
 
                 return grid;

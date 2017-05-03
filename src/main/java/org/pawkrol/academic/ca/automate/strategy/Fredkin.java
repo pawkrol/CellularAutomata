@@ -8,9 +8,6 @@ import org.pawkrol.academic.ca.utils.ColorHelper;
 
 import java.util.List;
 
-/**
- * Created by pawkrol on 4/30/17.
- */
 public class Fredkin implements Strategy {
 
     private final int DEAD = 0;
@@ -39,16 +36,12 @@ public class Fredkin implements Strategy {
     }
 
     @Override
-    public void seed(Grid grid, int amount) {
+    public void seed(Grid grid, int amount) {}
 
-    }
-
-    private int countStateAlive(List<Cell> cells){
-        int counter = 0;
-        for(Cell c: cells){
-            if (c.getState() == ALIVE) counter++;
-        }
-        return counter;
+    private long countStateAlive(List<Cell> cells){
+        return cells.stream()
+                .filter(c -> c.getState() == ALIVE)
+                .count();
     }
 
     @Override
