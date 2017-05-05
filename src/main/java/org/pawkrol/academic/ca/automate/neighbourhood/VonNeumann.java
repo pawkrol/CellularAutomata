@@ -9,7 +9,7 @@ import java.util.List;
 /**
  * Created by pawkrol on 4/30/17.
  */
-public class VonNeumann implements Neighbourhood {
+public class VonNeumann extends Neighbourhood {
     @Override
     public List<Cell> neighbours(Grid grid, Cell cell) {
         int cx = cell.getX();
@@ -22,12 +22,6 @@ public class VonNeumann implements Neighbourhood {
         addCellToList( cells, grid.getCell(cx - 1, cy) );
 
         return cells;
-    }
-
-    private void addCellToList(List<Cell> list, Cell cell){
-        if (cell != null){
-            list.add(cell);
-        }
     }
 
     @Override

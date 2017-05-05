@@ -7,9 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by pawkrol on 4/30/17.
+ * Created by pawkrol on 5/5/17.
  */
-public class Moore extends Neighbourhood {
+public class HexagonalRight extends Neighbourhood{
+
+    private static HexagonalRight hexagonalRight;
+
+    private HexagonalRight(){}
 
     @Override
     public List<Cell> neighbours(Grid grid, Cell cell) {
@@ -17,20 +21,26 @@ public class Moore extends Neighbourhood {
         int cy = cell.getY();
 
         List<Cell> cells = new LinkedList<>();
-        addCellToList( cells, grid.getCell(cx - 1, cy - 1) );
         addCellToList( cells, grid.getCell(cx, cy - 1) );
         addCellToList( cells, grid.getCell(cx + 1, cy - 1) );
         addCellToList( cells, grid.getCell(cx - 1, cy) );
         addCellToList( cells, grid.getCell(cx + 1, cy) );
         addCellToList( cells, grid.getCell(cx - 1, cy + 1) );
         addCellToList( cells, grid.getCell(cx, cy + 1) );
-        addCellToList( cells, grid.getCell(cx + 1, cy + 1) );
 
         return cells;
     }
 
+    public static HexagonalRight getInstance(){
+        if (hexagonalRight == null) {
+            hexagonalRight = new HexagonalRight();
+        }
+
+        return hexagonalRight;
+    }
+
     @Override
     public String toString() {
-        return "Moore";
+        return "Hexagonal Right";
     }
 }

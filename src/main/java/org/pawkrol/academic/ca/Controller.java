@@ -11,9 +11,7 @@ import javafx.scene.paint.Color;
 import org.pawkrol.academic.ca.automate.AutomataResolver;
 import org.pawkrol.academic.ca.automate.Cell;
 import org.pawkrol.academic.ca.automate.Grid;
-import org.pawkrol.academic.ca.automate.neighbourhood.Moore;
-import org.pawkrol.academic.ca.automate.neighbourhood.Neighbourhood;
-import org.pawkrol.academic.ca.automate.neighbourhood.VonNeumann;
+import org.pawkrol.academic.ca.automate.neighbourhood.*;
 import org.pawkrol.academic.ca.automate.strategy.Fredkin;
 import org.pawkrol.academic.ca.automate.strategy.GameOfLife;
 import org.pawkrol.academic.ca.automate.strategy.Strategy;
@@ -145,7 +143,11 @@ public class Controller implements Initializable{
 
         neighbourhoodCombo.getItems().addAll(
                 new Moore(),
-                new VonNeumann()
+                new VonNeumann(),
+                HexagonalLeft.getInstance(),
+                HexagonalRight.getInstance(),
+                new HexagonalRandom(),
+                new PentagonalRandom()
         );
         neighbourhoodCombo.getSelectionModel().selectFirst();
     }

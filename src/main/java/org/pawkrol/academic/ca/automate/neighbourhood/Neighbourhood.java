@@ -8,6 +8,12 @@ import java.util.List;
 /**
  * Created by pawkrol on 4/29/17.
  */
-public interface Neighbourhood {
-    List<Cell> neighbours(Grid grid, Cell cell);
+public abstract class Neighbourhood {
+    public abstract List<Cell> neighbours(Grid grid, Cell cell);
+
+    protected void addCellToList(List<Cell> list, Cell cell){
+        if (cell != null){
+            list.add(cell);
+        }
+    }
 }

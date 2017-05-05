@@ -7,9 +7,13 @@ import java.util.LinkedList;
 import java.util.List;
 
 /**
- * Created by pawkrol on 4/30/17.
+ * Created by pawkrol on 5/5/17.
  */
-public class Moore extends Neighbourhood {
+public class PentagonalTop extends Neighbourhood{
+
+    private static PentagonalTop pentagonalTop;
+
+    private PentagonalTop(){}
 
     @Override
     public List<Cell> neighbours(Grid grid, Cell cell) {
@@ -22,15 +26,20 @@ public class Moore extends Neighbourhood {
         addCellToList( cells, grid.getCell(cx + 1, cy - 1) );
         addCellToList( cells, grid.getCell(cx - 1, cy) );
         addCellToList( cells, grid.getCell(cx + 1, cy) );
-        addCellToList( cells, grid.getCell(cx - 1, cy + 1) );
-        addCellToList( cells, grid.getCell(cx, cy + 1) );
-        addCellToList( cells, grid.getCell(cx + 1, cy + 1) );
 
         return cells;
     }
 
+    public static PentagonalTop getInstance(){
+        if (pentagonalTop == null) {
+            pentagonalTop = new PentagonalTop();
+        }
+
+        return pentagonalTop;
+    }
+
     @Override
     public String toString() {
-        return "Moore";
+        return "Pentagonal Right";
     }
 }
