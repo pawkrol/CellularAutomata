@@ -1,6 +1,7 @@
 package org.pawkrol.academic.ca;
 
 import javafx.application.Platform;
+import javafx.concurrent.Worker;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.canvas.Canvas;
@@ -8,6 +9,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import org.pawkrol.academic.ca.automate.AutomataResolver;
 import org.pawkrol.academic.ca.automate.Cell;
 import org.pawkrol.academic.ca.automate.Grid;
@@ -20,6 +22,7 @@ import org.pawkrol.academic.ca.automate.strategy.Fredkin;
 import org.pawkrol.academic.ca.automate.strategy.GameOfLife;
 import org.pawkrol.academic.ca.automate.strategy.NaiveSeedGrowth;
 import org.pawkrol.academic.ca.automate.strategy.Strategy;
+import org.pawkrol.academic.ca.utils.AutomataBackService;
 import org.pawkrol.academic.ca.utils.ColorHelper;
 
 import java.net.URL;
@@ -35,15 +38,22 @@ public class Controller implements Initializable{
 
     @FXML private TextField colsText;
     @FXML private TextField rowsText;
-    @FXML private TextField stepsText;
     @FXML private TextField seedNText;
     @FXML private TextField seedRText;
+    @FXML private TextField stepsText;
+    @FXML private TextField delayText;
 
     @FXML private Label iterationText;
 
     @FXML private CheckBox cyclicCheck;
 
     @FXML private Button startBtn;
+    @FXML private Button stopBtn;
+    @FXML private Button initBtn;
+    @FXML private Button seedBtn;
+
+    private final AutomataBackService automataService = new AutomataBackService();
+    private AutomataResolver automataResolver;
 
     private GraphicsContext gc;
 
@@ -54,10 +64,8 @@ public class Controller implements Initializable{
 
     private double cellSize;
 
-    private int n;
-    private int r;
-
-    private AutomataResolver automataResolver;
+    private int delay; //ms
+    private int steps;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -72,16 +80,45 @@ public class Controller implements Initializable{
 
     @FXML
     public void onStart() throws Exception{
-        automataResolver.start();
+        if (automataService.getState() != Worker.State.READY) {
+            automataService.restart();
+        } else {
+            automataService.start();
+        }
+
         startBtn.setDisable(true);
+        stopBtn.setDisable(false);
+        initBtn.setDisable(true);
+    }
+
+    @FXML
+    public void onStop() {
+        automataService.cancel();
+
+        startBtn.setDisable(false);
+        stopBtn.setDisable(true);
+        initBtn.setDisable(false);
     }
 
     @FXML
     public void onInit() throws Exception {
         initResolver();
         startBtn.setDisable(false);
+        seedBtn.setDisable(false);
 
         iterationText.setText("0");
+    }
+
+    @FXML
+    public void onSeed() throws Exception {
+        Seeder seeder = seederCombo.getSelectionModel().getSelectedItem();
+        int n = Integer.parseInt(seedNText.getText());
+        int r = Integer.parseInt(seedRText.getText());
+
+        automataResolver.setSeeder(seeder);
+        automataResolver.seed(n, r);
+
+        draw(automataResolver.getGrid());
     }
 
     @FXML
@@ -104,21 +141,17 @@ public class Controller implements Initializable{
     private void fetchFromControls(AutomataResolver automataResolver) {
         int cols = Integer.parseInt(colsText.getText());
         int rows = Integer.parseInt(rowsText.getText());
-        int steps = Integer.parseInt(stepsText.getText());
 
-        n = Integer.parseInt(seedNText.getText());
-        r = Integer.parseInt(seedRText.getText());
+        steps = Integer.parseInt(stepsText.getText());
+        delay = Integer.parseInt(delayText.getText());
 
         Grid grid = new Grid(cols, rows, cyclicCheck.isSelected());
         Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
         Neighbourhood neighbourhood = neighbourhoodCombo.getSelectionModel().getSelectedItem();
-        Seeder seeder = seederCombo.getSelectionModel().getSelectedItem();
 
-        automataResolver.setSteps(steps);
         automataResolver.setGrid(grid);
         automataResolver.setStrategy(strategy);
         automataResolver.setNeighbourhood(neighbourhood);
-        automataResolver.setSeeder(seeder);
     }
 
     private void initResolver() throws Exception{
@@ -126,17 +159,14 @@ public class Controller implements Initializable{
         fetchFromControls(automataResolver);
 
         automataResolver.init();
-        automataResolver.seed(n, r);
-        automataResolver.setOnSucceeded( event ->
-                Platform.runLater(() -> {
-                        draw((Grid) event.getSource().getValue());
-                        automataResolver.reset();
-                        startBtn.setDisable(false);
-                        iterationText.setText(""
-                                + automataResolver.getIteration());
-                    }
-                )
+
+        automataService.init();
+        automataService.setAutomataResolver(automataResolver);
+        automataService.setOnSucceeded(
+                event -> onNextStep( (Grid) event.getSource().getValue() )
         );
+        automataService.setPeriod(Duration.millis(delay));
+        automataService.setSteps(steps);
 
         initGrid(automataResolver.getGrid());
         draw(automataResolver.getGrid());
@@ -187,6 +217,15 @@ public class Controller implements Initializable{
             xOffset = width/2 - ((gw * cellSize) / 2);
         }
 
+    }
+
+    private void onNextStep(Grid grid) {
+        Platform.runLater(() -> {
+            draw(grid);
+            iterationText.setText(
+                    String.format("%d", automataService.getIteration())
+            );
+        });
     }
 
     private void draw(Grid grid){
