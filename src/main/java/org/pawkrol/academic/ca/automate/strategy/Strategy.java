@@ -10,6 +10,5 @@ import org.pawkrol.academic.ca.automate.neighbourhood.Neighbourhood;
 public interface Strategy {
     void init(Grid grid);
     void evaluate(Grid grid, Neighbourhood neighbourhood);
-    void seed(Grid grid, int amount);
     void switchState(Cell cell);
 }

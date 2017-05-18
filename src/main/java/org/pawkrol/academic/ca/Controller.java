@@ -12,8 +12,13 @@ import org.pawkrol.academic.ca.automate.AutomataResolver;
 import org.pawkrol.academic.ca.automate.Cell;
 import org.pawkrol.academic.ca.automate.Grid;
 import org.pawkrol.academic.ca.automate.neighbourhood.*;
+import org.pawkrol.academic.ca.automate.seed.NoSeeder;
+import org.pawkrol.academic.ca.automate.seed.RadiusRandomSeeder;
+import org.pawkrol.academic.ca.automate.seed.RandomSeeder;
+import org.pawkrol.academic.ca.automate.seed.Seeder;
 import org.pawkrol.academic.ca.automate.strategy.Fredkin;
 import org.pawkrol.academic.ca.automate.strategy.GameOfLife;
+import org.pawkrol.academic.ca.automate.strategy.NaiveSeedGrowth;
 import org.pawkrol.academic.ca.automate.strategy.Strategy;
 import org.pawkrol.academic.ca.utils.ColorHelper;
 
@@ -26,16 +31,17 @@ public class Controller implements Initializable{
 
     @FXML private ComboBox<Strategy> strategyCombo;
     @FXML private ComboBox<Neighbourhood> neighbourhoodCombo;
+    @FXML private ComboBox<Seeder> seederCombo;
 
     @FXML private TextField colsText;
     @FXML private TextField rowsText;
     @FXML private TextField stepsText;
-    @FXML private TextField seedText;
+    @FXML private TextField seedNText;
+    @FXML private TextField seedRText;
 
     @FXML private Label iterationText;
 
     @FXML private CheckBox cyclicCheck;
-    @FXML private CheckBox seedCheck;
 
     @FXML private Button startBtn;
 
@@ -47,6 +53,9 @@ public class Controller implements Initializable{
     private double yOffset;
 
     private double cellSize;
+
+    private int n;
+    private int r;
 
     private AutomataResolver automataResolver;
 
@@ -97,14 +106,19 @@ public class Controller implements Initializable{
         int rows = Integer.parseInt(rowsText.getText());
         int steps = Integer.parseInt(stepsText.getText());
 
+        n = Integer.parseInt(seedNText.getText());
+        r = Integer.parseInt(seedRText.getText());
+
         Grid grid = new Grid(cols, rows, cyclicCheck.isSelected());
         Strategy strategy = strategyCombo.getSelectionModel().getSelectedItem();
         Neighbourhood neighbourhood = neighbourhoodCombo.getSelectionModel().getSelectedItem();
+        Seeder seeder = seederCombo.getSelectionModel().getSelectedItem();
 
         automataResolver.setSteps(steps);
         automataResolver.setGrid(grid);
         automataResolver.setStrategy(strategy);
         automataResolver.setNeighbourhood(neighbourhood);
+        automataResolver.setSeeder(seeder);
     }
 
     private void initResolver() throws Exception{
@@ -112,6 +126,7 @@ public class Controller implements Initializable{
         fetchFromControls(automataResolver);
 
         automataResolver.init();
+        automataResolver.seed(n, r);
         automataResolver.setOnSucceeded( event ->
                 Platform.runLater(() -> {
                         draw((Grid) event.getSource().getValue());
@@ -123,11 +138,6 @@ public class Controller implements Initializable{
                 )
         );
 
-        if (seedCheck.isSelected()) {
-            int seed = Integer.parseInt(seedText.getText());
-            automataResolver.seed(seed);
-        }
-
         initGrid(automataResolver.getGrid());
         draw(automataResolver.getGrid());
     }
@@ -137,7 +147,8 @@ public class Controller implements Initializable{
 
         strategyCombo.getItems().addAll(
                 new GameOfLife(),
-                new Fredkin()
+                new Fredkin(),
+                new NaiveSeedGrowth()
         );
         strategyCombo.getSelectionModel().selectFirst();
 
@@ -150,6 +161,13 @@ public class Controller implements Initializable{
                 new PentagonalRandom()
         );
         neighbourhoodCombo.getSelectionModel().selectFirst();
+
+        seederCombo.getItems().addAll(
+                new NoSeeder(),
+                new RandomSeeder(),
+                new RadiusRandomSeeder()
+        );
+        seederCombo.getSelectionModel().selectFirst();
     }
 
     private void initGrid(Grid grid){

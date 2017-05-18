@@ -47,6 +47,10 @@ public class Grid {
         return height;
     }
 
+    public boolean isCyclic() {
+        return isCyclic;
+    }
+
     public Cell getCell(int x, int y){
         if (isCyclic) {
             return getCellCyclic(x, y);

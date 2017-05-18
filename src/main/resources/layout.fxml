@@ -1,41 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.canvas.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0"
-      prefWidth="1000.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.pawkrol.academic.ca.Controller">
-   <Pane prefHeight="100.0" prefWidth="1000.0">
-      <Button fx:id="startBtn" layoutX="936.0" layoutY="50.0" mnemonicParsing="false" onAction="#onStart"
-              text="Start"/>
-      <ComboBox fx:id="strategyCombo" layoutX="150.0" layoutY="14.0" prefWidth="150.0"/>
-      <ComboBox fx:id="neighbourhoodCombo" layoutX="150.0" layoutY="51.0" prefWidth="150.0"/>
-      <Label layoutX="14.0" layoutY="18.0" text="Strategy"/>
-      <Label layoutX="14.0" layoutY="55.0" text="Neighbourhood"/>
-      <Label layoutX="337.0" layoutY="19.0" text="Grid"/>
-      <Separator layoutX="313.0" layoutY="13.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="6.0"/>
-      <Label layoutX="337.0" layoutY="55.0" text="cols"/>
-      <TextField fx:id="colsText" alignment="CENTER_RIGHT" layoutX="378.0" layoutY="50.0" prefHeight="25.0"
-                 prefWidth="56.0" text="0"/>
-      <Label layoutX="458.0" layoutY="56.0" text="rows"/>
-      <TextField fx:id="rowsText" alignment="CENTER_RIGHT" layoutX="500.0" layoutY="50.0" prefHeight="25.0"
-                 prefWidth="56.0" text="0"/>
-      <CheckBox fx:id="cyclicCheck" layoutX="498.0" layoutY="17.0" mnemonicParsing="false" text="cyclic"/>
-      <Separator layoutX="579.0" layoutY="13.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="6.0"/>
-      <Label layoutX="598.0" layoutY="56.0" text="Steps"/>
-      <TextField fx:id="stepsText" alignment="CENTER_RIGHT" layoutX="651.0" layoutY="51.0" prefHeight="25.0"
-                 prefWidth="60.0" text="1"/>
-      <Button layoutX="854.0" layoutY="50.0" mnemonicParsing="false" onAction="#onInit" text="Initialize"/>
-      <Label layoutX="628.0" layoutY="19.0" text="Seed"/>
-      <TextField fx:id="seedText" alignment="CENTER_RIGHT" layoutX="671.0" layoutY="13.0" prefHeight="25.0"
-                 prefWidth="60.0" text="0"/>
-      <CheckBox fx:id="seedCheck" layoutX="598.0" layoutY="18.0" mnemonicParsing="false"/>
-      <Label layoutX="854.0" layoutY="18.0" text="Iteration:"/>
-      <Label fx:id="iterationText" layoutX="922.0" layoutY="19.0" text="0"/>
-   </Pane>
-   <Pane prefHeight="500.0" prefWidth="1000.0" style="-fx-background-color: darkgray">
-      <Canvas fx:id="canvas" height="500.0" onMouseClicked="#onCanvasClicked" width="1000.0"/>
-   </Pane>
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1200.0" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.pawkrol.academic.ca.Controller">
+   <children>
+      <Pane prefHeight="100.0" prefWidth="1000.0">
+         <children>
+            <Button fx:id="startBtn" layoutX="1145.0" layoutY="50.0" mnemonicParsing="false" onAction="#onStart" text="Start" />
+            <ComboBox fx:id="strategyCombo" layoutX="150.0" layoutY="14.0" prefWidth="150.0" />
+            <ComboBox fx:id="neighbourhoodCombo" layoutX="150.0" layoutY="51.0" prefWidth="150.0" />
+            <Label layoutX="14.0" layoutY="18.0" text="Strategy" />
+            <Label layoutX="14.0" layoutY="55.0" text="Neighbourhood" />
+            <Label layoutX="337.0" layoutY="19.0" text="Grid" />
+            <Separator layoutX="313.0" layoutY="13.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="6.0" />
+            <Label layoutX="337.0" layoutY="55.0" text="cols" />
+            <TextField fx:id="colsText" alignment="CENTER_RIGHT" layoutX="378.0" layoutY="50.0" prefHeight="25.0" prefWidth="56.0" text="0" />
+            <Label layoutX="458.0" layoutY="56.0" text="rows" />
+            <TextField fx:id="rowsText" alignment="CENTER_RIGHT" layoutX="500.0" layoutY="50.0" prefHeight="25.0" prefWidth="56.0" text="0" />
+            <CheckBox fx:id="cyclicCheck" layoutX="498.0" layoutY="17.0" mnemonicParsing="false" text="cyclic" />
+            <Separator layoutX="579.0" layoutY="13.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="6.0" />
+            <Label layoutX="839.0" layoutY="54.0" text="Steps" />
+            <TextField fx:id="stepsText" alignment="CENTER_RIGHT" layoutX="893.0" layoutY="50.0" prefHeight="25.0" prefWidth="60.0" text="1" />
+            <Button layoutX="1063.0" layoutY="50.0" mnemonicParsing="false" onAction="#onInit" text="Initialize" />
+            <Label layoutX="599.0" layoutY="19.0" text="Seed" />
+            <TextField fx:id="seedNText" alignment="CENTER_RIGHT" layoutX="625.0" layoutY="50.0" prefHeight="25.0" prefWidth="60.0" text="0" />
+            <Label layoutX="1063.0" layoutY="18.0" text="Iteration:" />
+            <Label fx:id="iterationText" layoutX="1131.0" layoutY="19.0" text="0" />
+            <Label layoutX="599.0" layoutY="54.0" text="n" />
+            <Label layoutX="714.0" layoutY="54.0" text="R" />
+            <TextField fx:id="seedRText" alignment="CENTER_RIGHT" layoutX="737.0" layoutY="51.0" prefHeight="25.0" prefWidth="60.0" text="0" />
+            <ComboBox fx:id="seederCombo" layoutX="646.0" layoutY="15.0" prefWidth="150.0" />
+            <Separator layoutX="810.0" layoutY="13.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="6.0" />
+         </children>
+      </Pane>
+      <Pane prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: darkgray">
+         <children>
+            <Canvas fx:id="canvas" height="600.0" onMouseClicked="#onCanvasClicked" width="1200.0" />
+         </children>
+      </Pane>
+   </children>
 </VBox>

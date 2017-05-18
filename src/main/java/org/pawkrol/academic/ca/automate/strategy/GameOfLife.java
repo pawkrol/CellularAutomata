@@ -42,18 +42,6 @@ public class GameOfLife implements Strategy {
     }
 
     @Override
-    public void seed(Grid grid, int amount) {
-        Random random = new Random();
-
-        for (int i = 0; i < amount; i++) {
-            int x = random.nextInt(grid.getWidth());
-            int y = random.nextInt(grid.getHeight());
-            grid.getCell(x, y).setState(ALIVE);
-        }
-
-    }
-
-    @Override
     public void switchState(Cell cell) {
         if (cell.getState() == ALIVE)
             cell.setState(DEAD);

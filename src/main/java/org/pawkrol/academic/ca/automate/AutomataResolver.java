@@ -3,6 +3,7 @@ package org.pawkrol.academic.ca.automate;
 import javafx.concurrent.Service;
 import javafx.concurrent.Task;
 import org.pawkrol.academic.ca.automate.neighbourhood.Neighbourhood;
+import org.pawkrol.academic.ca.automate.seed.Seeder;
 import org.pawkrol.academic.ca.automate.strategy.Strategy;
 
 public class AutomataResolver extends Service<Grid>{
@@ -10,6 +11,8 @@ public class AutomataResolver extends Service<Grid>{
     private Strategy strategy;
     private Neighbourhood neighbourhood;
     private Grid grid;
+    private Seeder seeder;
+
     private int steps;
     private int iteration;
 
@@ -23,11 +26,13 @@ public class AutomataResolver extends Service<Grid>{
         strategy.init(grid);
     }
 
-    public void seed(int amount) throws Exception{
+    public void seed(int n, int r) throws Exception{
         if (grid == null) throw new Exception("Grid not set");
         if (strategy == null) throw new Exception("Strategy not set");
 
-        strategy.seed(grid, amount);
+        if (seeder != null) {
+            seeder.seed(strategy, grid, n, r);
+        }
     }
 
     public void switchState(Cell c){
@@ -40,6 +45,10 @@ public class AutomataResolver extends Service<Grid>{
 
     public void setNeighbourhood(Neighbourhood neighbourhood) {
         this.neighbourhood = neighbourhood;
+    }
+
+    public void setSeeder(Seeder seeder) {
+        this.seeder = seeder;
     }
 
     public void setGrid(Grid grid) {

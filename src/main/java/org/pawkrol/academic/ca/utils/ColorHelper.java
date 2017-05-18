@@ -13,10 +13,21 @@ public class ColorHelper {
     private static Map<Integer, Color> colorMap = new HashMap<>();
 
     public static Color getColor(int value){
-        return colorMap.get(value);
+        Color color = colorMap.get(value);
+
+        if (color == null) {
+            color = randomColor();
+            setColor(value, color);
+        }
+
+        return color;
     }
 
     public static void setColor(int value, Color color) {
         colorMap.put(value, color);
+    }
+
+    private static Color randomColor(){
+        return Color.color(Math.random(), Math.random(), Math.random());
     }
 }

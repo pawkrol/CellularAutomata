@@ -35,9 +35,6 @@ public class Fredkin implements Strategy {
 
     }
 
-    @Override
-    public void seed(Grid grid, int amount) {}
-
     private long countStateAlive(List<Cell> cells){
         return cells.stream()
                 .filter(c -> c.getState() == ALIVE)
