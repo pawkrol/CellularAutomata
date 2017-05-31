@@ -36,8 +36,8 @@ public class AutomataBackService extends ScheduledService<Grid> {
         return new Task<Grid>() {
             @Override
             protected Grid call() throws Exception {
-                iteration++;
                 if (steps != 0 && iteration >= steps) cancel();
+                iteration++;
 
                 return automataResolver.makeStep();
             }

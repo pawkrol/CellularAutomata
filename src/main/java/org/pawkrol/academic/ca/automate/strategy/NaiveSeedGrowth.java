@@ -29,7 +29,7 @@ public class NaiveSeedGrowth implements Strategy {
         grid.forEach( c -> {
             List<Cell> neighbours = neighbourhood.neighbours(prevGrid, c);
 
-            if (anyNeighbourIsSeed(neighbours)) {
+            if (c.getState() == 0 && anyNeighbourIsSeed(neighbours)) {
                 int state = getMostFrequentState(neighbours);
                 c.setState(state);
             }
@@ -38,7 +38,9 @@ public class NaiveSeedGrowth implements Strategy {
 
     @Override
     public void switchState(Cell cell) {
-        cell.setState(++types);
+        if (cell.getState() == 0) {
+            cell.setState(++types);
+        }
     }
 
     private boolean anyNeighbourIsSeed(List<Cell> neighbours) {

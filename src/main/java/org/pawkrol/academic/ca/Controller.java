@@ -46,6 +46,7 @@ public class Controller implements Initializable{
     @FXML private Label iterationText;
 
     @FXML private CheckBox cyclicCheck;
+    @FXML private CheckBox showCheck;
 
     @FXML private Button startBtn;
     @FXML private Button stopBtn;
@@ -232,7 +233,10 @@ public class Controller implements Initializable{
         gc.clearRect(0, 0, width, height);
 
         drawCells(grid);
-        drawGrid(grid);
+
+        if (showCheck.isSelected()) {
+            drawGrid(grid);
+        }
     }
 
     private void drawCells(Grid grid){

@@ -7,7 +7,6 @@ import org.pawkrol.academic.ca.automate.neighbourhood.Neighbourhood;
 import org.pawkrol.academic.ca.utils.ColorHelper;
 
 import java.util.List;
-import java.util.Random;
 
 public class GameOfLife implements Strategy {
 
