@@ -19,7 +19,7 @@ public class Recrystallization implements Strategy {
     private double roSum;
 
     private long t;
-    private int k = 10000;
+    private int k = 100;
 
     private boolean finished;
     private boolean changed;

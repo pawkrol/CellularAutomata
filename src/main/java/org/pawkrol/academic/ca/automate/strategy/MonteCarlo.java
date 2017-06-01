@@ -27,6 +27,7 @@ public class MonteCarlo implements Strategy {
 
     @Override
     public void evaluate(Grid grid, Neighbourhood neighbourhood) {
+        List<Cell> neighbours;
         Cell c;
 
         for (int i = 0; i < grid.getSize(); i++) {
@@ -34,15 +35,14 @@ public class MonteCarlo implements Strategy {
             int cy = random.nextInt(grid.getHeight());
 
             c = grid.getCell(cx, cy);
-
-            List<Cell> neighbours = neighbourhood.neighbours(grid, c);
+            neighbours = neighbourhood.neighbours(grid, c);
 
             int prevE = getEnergy(c.getState(), neighbours);
 //            int newState = random.nextInt(grid.getStates());
             int newState = getNewState(neighbours);
             int newE = getEnergy(newState, neighbours);
 
-            if (prevE - newE > 0) {
+            if (newE - prevE <= 0) {
                 c.setState(newState);
             }
         }
@@ -71,6 +71,17 @@ public class MonteCarlo implements Strategy {
         }
 
         return states.get( random.nextInt( states.size() ) );
+    }
+
+    private boolean isOnBorder(List<Cell> neighbours){
+        Cell c = neighbours.get(0);
+        for (int i = 1; i < neighbours.size(); i++) {
+            if (c.getState() != neighbours.get(i).getState()) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     @Override
