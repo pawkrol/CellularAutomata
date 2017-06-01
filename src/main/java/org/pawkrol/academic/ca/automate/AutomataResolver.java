@@ -35,12 +35,24 @@ public class AutomataResolver {
         this.strategy = strategy;
     }
 
+    public Strategy getStrategy() {
+        return strategy;
+    }
+
     public void setNeighbourhood(Neighbourhood neighbourhood) {
         this.neighbourhood = neighbourhood;
     }
 
+    public Neighbourhood getNeighbourhood() {
+        return neighbourhood;
+    }
+
     public void setSeeder(Seeder seeder) {
         this.seeder = seeder;
+    }
+
+    public Seeder getSeeder() {
+        return seeder;
     }
 
     public void setGrid(Grid grid) {

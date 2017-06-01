@@ -13,7 +13,6 @@ public class AutomataBackService extends ScheduledService<Grid> {
     private AutomataResolver automataResolver;
 
     private int iteration;
-    private int steps;
 
     public void init(){
         iteration = 0;
@@ -23,12 +22,12 @@ public class AutomataBackService extends ScheduledService<Grid> {
         this.automataResolver = automataResolver;
     }
 
-    public void setSteps(int steps) {
-        this.steps = steps;
-    }
-
     public int getIteration() {
         return iteration;
+    }
+
+    public boolean isFinished(){
+        return automataResolver.getStrategy().isFinished();
     }
 
     @Override
@@ -36,7 +35,7 @@ public class AutomataBackService extends ScheduledService<Grid> {
         return new Task<Grid>() {
             @Override
             protected Grid call() throws Exception {
-                if (steps != 0 && iteration >= steps) cancel();
+                if ( isFinished() ) cancel();
                 iteration++;
 
                 return automataResolver.makeStep();

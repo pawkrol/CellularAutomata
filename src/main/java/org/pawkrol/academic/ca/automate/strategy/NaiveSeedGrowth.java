@@ -15,10 +15,18 @@ import java.util.Random;
 public class NaiveSeedGrowth implements Strategy {
 
     private int types;
+    private boolean finished;
+    private boolean changed;
+
+    private static NaiveSeedGrowth naiveSeedGrowth = null;
+
+    private NaiveSeedGrowth() {}
 
     @Override
     public void init(Grid grid) {
         types = 0;
+        finished = false;
+
         ColorHelper.setColor(types, Color.WHITE);
     }
 
@@ -26,21 +34,40 @@ public class NaiveSeedGrowth implements Strategy {
     public void evaluate(Grid grid, Neighbourhood neighbourhood) {
         Grid prevGrid = new Grid(grid);
 
+        changed = false;
         grid.forEach( c -> {
             List<Cell> neighbours = neighbourhood.neighbours(prevGrid, c);
 
             if (c.getState() == 0 && anyNeighbourIsSeed(neighbours)) {
                 int state = getMostFrequentState(neighbours);
                 c.setState(state);
+                changed = true;
             }
         });
+
+        if (!changed) finished = true;
+
+        grid.setStates(types);
     }
 
     @Override
     public void switchState(Cell cell) {
         if (cell.getState() == 0) {
-            cell.setState(++types);
+            cell.setState(getNewTypes());
         }
+    }
+
+    @Override
+    public boolean isFinished() {
+        return finished;
+    }
+
+    public int getTypes() {
+        return types;
+    }
+
+    public int getNewTypes() {
+        return ++types;
     }
 
     private boolean anyNeighbourIsSeed(List<Cell> neighbours) {
@@ -52,7 +79,7 @@ public class NaiveSeedGrowth implements Strategy {
         return false;
     }
 
-    private int getMostFrequentState(List<Cell> neighbours) {
+    public int getMostFrequentState(List<Cell> neighbours) {
         int[] freq = new int[types + 1];
         Random random = new Random();
 
@@ -75,6 +102,14 @@ public class NaiveSeedGrowth implements Strategy {
         }
 
         return mostState;
+    }
+
+    public static NaiveSeedGrowth getInstance(){
+        if (naiveSeedGrowth == null) {
+            naiveSeedGrowth = new NaiveSeedGrowth();
+        }
+
+        return naiveSeedGrowth;
     }
 
     @Override

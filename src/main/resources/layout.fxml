@@ -17,14 +17,14 @@
             <Label layoutX="337.0" layoutY="19.0" text="Grid" />
             <Separator layoutX="313.0" layoutY="13.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="6.0" />
             <Label layoutX="337.0" layoutY="55.0" text="cols" />
-            <TextField fx:id="colsText" alignment="CENTER_RIGHT" layoutX="378.0" layoutY="50.0" prefHeight="25.0" prefWidth="56.0" text="0" />
+            <TextField fx:id="colsText" alignment="CENTER_RIGHT" layoutX="378.0" layoutY="50.0" prefHeight="25.0" prefWidth="56.0" text="300" />
             <Label layoutX="458.0" layoutY="56.0" text="rows" />
-            <TextField fx:id="rowsText" alignment="CENTER_RIGHT" layoutX="500.0" layoutY="50.0" prefHeight="25.0" prefWidth="56.0" text="0" />
-            <CheckBox fx:id="cyclicCheck" layoutX="498.0" layoutY="17.0" mnemonicParsing="false" text="cyclic" />
+            <TextField fx:id="rowsText" alignment="CENTER_RIGHT" layoutX="500.0" layoutY="50.0" prefHeight="25.0" prefWidth="56.0" text="300" />
+            <CheckBox fx:id="cyclicCheck" layoutX="458.0" layoutY="17.0" mnemonicParsing="false" text="cyclic" />
             <Separator layoutX="579.0" layoutY="13.0" orientation="VERTICAL" prefHeight="66.0" prefWidth="6.0" />
             <Button fx:id="initBtn" layoutX="1030.0" layoutY="52.0" mnemonicParsing="false" onAction="#onInit" text="Init" />
             <Label layoutX="599.0" layoutY="19.0" text="Seed" />
-            <TextField fx:id="seedNText" alignment="CENTER_RIGHT" layoutX="625.0" layoutY="50.0" prefHeight="25.0" prefWidth="60.0" text="0" />
+            <TextField fx:id="seedNText" alignment="CENTER_RIGHT" layoutX="625.0" layoutY="50.0" prefHeight="25.0" prefWidth="60.0" text="100" />
             <Label layoutX="1031.0" layoutY="18.0" text="Iteration:" />
             <Label fx:id="iterationText" layoutX="1103.0" layoutY="19.0" text="0" />
             <Label layoutX="599.0" layoutY="54.0" text="n" />
@@ -36,9 +36,10 @@
             <Label layoutX="899.0" layoutY="19.0" text="Steps" />
             <Label layoutX="899.0" layoutY="54.0" text="Delay" />
             <TextField fx:id="stepsText" alignment="CENTER_RIGHT" layoutX="948.0" layoutY="15.0" prefHeight="25.0" prefWidth="60.0" text="0" />
-            <TextField fx:id="delayText" alignment="CENTER_RIGHT" layoutX="948.0" layoutY="52.0" prefHeight="25.0" prefWidth="60.0" text="500" />
+            <TextField fx:id="delayText" alignment="CENTER_RIGHT" layoutX="948.0" layoutY="52.0" prefHeight="25.0" prefWidth="60.0" text="50" />
             <Button fx:id="seedBtn" disable="true" layoutX="824.0" layoutY="50.0" mnemonicParsing="false" onAction="#onSeed" text="Seed" />
             <CheckBox fx:id="showCheck" layoutX="397.0" layoutY="17.0" mnemonicParsing="false" selected="true" text="show" />
+            <CheckBox fx:id="newGridCheck" layoutX="513.0" layoutY="18.0" mnemonicParsing="false" selected="true" text="new" />
          </children>
       </Pane>
       <Pane prefHeight="600.0" prefWidth="1200.0" style="-fx-background-color: darkgray">

@@ -9,6 +9,8 @@ public class Cell {
     private int y;
 
     private int state;
+    private double ro;
+    private boolean recrystallized;
 
     public Cell(int x, int y) {
         this.x = x;
@@ -30,5 +32,21 @@ public class Cell {
 
     public void setState(int state) {
         this.state = state;
+    }
+
+    public double getRo() {
+        return ro;
+    }
+
+    public void setRo(double ro) {
+        this.ro = ro;
+    }
+
+    public boolean isRecrystallized() {
+        return recrystallized;
+    }
+
+    public void setRecrystallized(boolean recrystallized) {
+        this.recrystallized = recrystallized;
     }
 }

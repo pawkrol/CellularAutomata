@@ -13,6 +13,8 @@ public class Grid {
 
     private boolean isCyclic;
 
+    private int states;
+
     public Grid(int width, int height, boolean isCyclic){
         this.width = width;
         this.height = height;
@@ -30,6 +32,8 @@ public class Grid {
         for (Cell c: other.grid){
             Cell nc = new Cell(c.getX(), c.getY());
             nc.setState(c.getState());
+            nc.setRo(c.getRo());
+            nc.setRecrystallized(c.isRecrystallized());
 
             grid.add(nc);
         }
@@ -45,6 +49,18 @@ public class Grid {
 
     public int getHeight() {
         return height;
+    }
+
+    public int getSize(){
+        return width * height;
+    }
+
+    public int getStates() {
+        return states;
+    }
+
+    public void setStates(int states) {
+        this.states = states;
     }
 
     public boolean isCyclic() {

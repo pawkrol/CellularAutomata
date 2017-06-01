@@ -1,0 +1,80 @@
+package org.pawkrol.academic.ca.automate.strategy;
+
+import javafx.scene.paint.Color;
+import org.pawkrol.academic.ca.automate.Cell;
+import org.pawkrol.academic.ca.automate.Grid;
+import org.pawkrol.academic.ca.automate.neighbourhood.Neighbourhood;
+import org.pawkrol.academic.ca.utils.ColorHelper;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+
+/**
+ * Created by pawkrol on 2017-06-01.
+ */
+public class MonteCarlo implements Strategy {
+
+    private Random random;
+
+    @Override
+    public void init(Grid grid) {
+        ColorHelper.setColor(0, Color.WHITE);
+        random = new Random();
+
+        grid.forEach(c -> c.setRecrystallized(false));
+    }
+
+    @Override
+    public void evaluate(Grid grid, Neighbourhood neighbourhood) {
+        Cell c;
+
+        for (int i = 0; i < grid.getSize(); i++) {
+            int cx = random.nextInt(grid.getWidth());
+            int cy = random.nextInt(grid.getHeight());
+
+            c = grid.getCell(cx, cy);
+
+            List<Cell> neighbours = neighbourhood.neighbours(grid, c);
+
+            int prevE = getEnergy(c.getState(), neighbours);
+//            int newState = random.nextInt(grid.getStates());
+            int newState = getNewState(neighbours);
+            int newE = getEnergy(newState, neighbours);
+
+            if (prevE - newE > 0) {
+                c.setState(newState);
+            }
+        }
+    }
+
+    @Override
+    public void switchState(Cell cell) {
+
+    }
+
+    private int getEnergy(int cellState, List<Cell> neighbours) {
+        int buff = 0;
+        for (Cell nc: neighbours) {
+            if (nc.getState() != cellState) {
+                buff++;
+            }
+        }
+
+        return buff;
+    }
+
+    private int getNewState(List<Cell> neighbours) {
+        ArrayList<Integer> states = new ArrayList<>();
+        for (Cell c: neighbours) {
+            states.add(c.getState());
+        }
+
+        return states.get( random.nextInt( states.size() ) );
+    }
+
+    @Override
+    public String toString() {
+        return "Monte Carlo";
+    }
+}
