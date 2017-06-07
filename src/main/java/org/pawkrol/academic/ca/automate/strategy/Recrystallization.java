@@ -152,13 +152,12 @@ public class Recrystallization implements Strategy {
 
     private boolean isOnBorder(List<Cell> neighbours){
         Cell c = neighbours.get(0);
-        for (int i = 1; i < neighbours.size(); i++) {
-            if (c.getState() != neighbours.get(i).getState()) {
-                return true;
-            }
-        }
+        Cell cn = neighbours.stream()
+                .filter(cell -> cell.getState() != c.getState())
+                .findAny()
+                .orElse(null);
 
-        return false;
+        return cn != null;
     }
 
     private void addToRandomOnBorder(Grid grid, Grid startGrid, Neighbourhood neighbourhood) {

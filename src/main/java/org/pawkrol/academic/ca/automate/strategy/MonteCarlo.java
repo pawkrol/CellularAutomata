@@ -37,10 +37,10 @@ public class MonteCarlo implements Strategy {
             c = grid.getCell(cx, cy);
             neighbours = neighbourhood.neighbours(grid, c);
 
-            int prevE = getEnergy(c.getState(), neighbours);
+            long prevE = getEnergy(c.getState(), neighbours);
 //            int newState = random.nextInt(grid.getStates());
             int newState = getNewState(neighbours);
-            int newE = getEnergy(newState, neighbours);
+            long newE = getEnergy(newState, neighbours);
 
             if (newE - prevE <= 0) {
                 c.setState(newState);
@@ -53,35 +53,12 @@ public class MonteCarlo implements Strategy {
 
     }
 
-    private int getEnergy(int cellState, List<Cell> neighbours) {
-        int buff = 0;
-        for (Cell nc: neighbours) {
-            if (nc.getState() != cellState) {
-                buff++;
-            }
-        }
-
-        return buff;
+    private long getEnergy(int cellState, List<Cell> neighbours) {
+        return neighbours.stream().filter(cell -> cell.getState() != cellState).count();
     }
 
     private int getNewState(List<Cell> neighbours) {
-        ArrayList<Integer> states = new ArrayList<>();
-        for (Cell c: neighbours) {
-            states.add(c.getState());
-        }
-
-        return states.get( random.nextInt( states.size() ) );
-    }
-
-    private boolean isOnBorder(List<Cell> neighbours){
-        Cell c = neighbours.get(0);
-        for (int i = 1; i < neighbours.size(); i++) {
-            if (c.getState() != neighbours.get(i).getState()) {
-                return true;
-            }
-        }
-
-        return false;
+        return neighbours.get( random.nextInt( neighbours.size() ) ).getState();
     }
 
     @Override
