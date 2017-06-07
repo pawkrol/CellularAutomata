@@ -71,12 +71,7 @@ public class NaiveSeedGrowth implements Strategy {
     }
 
     private boolean anyNeighbourIsSeed(List<Cell> neighbours) {
-        for (Cell c : neighbours) {
-            if (c.getState() != 0)
-                return true;
-        }
-
-        return false;
+        return neighbours.stream().anyMatch(cell -> cell.getState() != 0);
     }
 
     public int getMostFrequentState(List<Cell> neighbours) {
